@@ -1,5 +1,6 @@
 package org.example;
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.Scanner;
 
 /*
@@ -11,24 +12,29 @@ public class App
 {
     public static void main( String[] args )
     {
-        DecimalFormat f = new DecimalFormat("##.00");
+        DecimalFormat f = new DecimalFormat("#0.00");
         Scanner scanner = new Scanner(System.in);
-        float principal, interestRate, years, finalValue;
+        float orderAmount, tax, total;
+        final float taxRate = .055f;
 
-        System.out.println( "Enter the principal: " );
-        principal = scanner.nextFloat();
+        System.out.println( "What is the order amount? " );
+        orderAmount = scanner.nextFloat();
+        total = orderAmount;
 
-        System.out.println( "Enter the rate of interest: " );
-        interestRate = scanner.nextFloat();
+        System.out.println( "What is the state? " );
+        String state = scanner.next();
 
-        System.out.println( "Enter the number of years: " );
-        years = scanner.nextFloat();
+        if(Objects.equals(state, "WI"))
+        {
+            tax = orderAmount * taxRate;
+            total = orderAmount + tax;
 
-        interestRate /= 100;
-        finalValue = principal * (1 + interestRate*years);
-        interestRate *= 100;
+            System.out.println( "The subtotal is $" + f.format(orderAmount) + "\n" +
+                    "The tax is $" + f.format(tax));
+        }
 
-        System.out.println( "After " + (int)years + " years at " + interestRate +
-                "%, the investment will be worth $" + f.format(finalValue));
+        System.out.println("The total is $" + f.format(total));
+
+        scanner.close();
     }
 }
